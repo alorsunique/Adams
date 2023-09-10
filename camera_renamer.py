@@ -1,14 +1,25 @@
 # This script should rename photos with EXIF taken from phones and cameras
 
+from pathlib import Path
+
 import os
 import shutil
 from datetime import datetime
 
 from exif import Image
 
-project_dir = os.getcwd()
-input_dir = os.path.join(project_dir, "Input")
-output_dir = os.path.join(project_dir, "Output")
+project_dir = Path.cwd()
+
+current_dir = project_dir
+current_dir = current_dir.parent.parent
+
+resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+
+if not os.path.exists(resources_dir):
+    os.mkdir(resources_dir)
+
+input_dir = resources_dir / "Input"
+output_dir = resources_dir / "Output"
 
 # Initialize the folders involved
 
