@@ -3,26 +3,31 @@
 
 import os
 import shutil
+from pathlib import Path
 
 from exif import Image
 
-project_dir = os.getcwd()
-output_dir = os.path.join(project_dir, "Output")
-sort_dir = os.path.join(project_dir, "Sorted Directory")
+project_dir = Path.cwd()
 
-if not os.path.exists(sort_dir):
+current_dir = project_dir
+current_dir = current_dir.parent.parent
+
+resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+
+output_dir = resources_dir / "Output"
+sort_dir = resources_dir / "Sorted Directory"
+
+if not sort_dir.exists():
     os.mkdir(sort_dir)
 
 count = 0
 
-for image_file in os.listdir(output_dir):
+for image_file in output_dir.iterdir():
 
     count += 1
-    print(f"Current Count: {count} | {image_file}")
+    print(f"Current Count: {count} | {image_file.name}")
 
-    source_file = os.path.join(output_dir, image_file)
-
-    image_handle = open(source_file, 'rb')
+    image_handle = open(image_file, 'rb')
 
     image_object = Image(image_handle)
 
@@ -36,8 +41,8 @@ for image_file in os.listdir(output_dir):
 
     season_folder = f"S{in_year}"
 
-    move_folder = os.path.join(sort_dir, season_folder)
-    if not os.path.exists(move_folder):
+    move_folder = sort_dir / season_folder
+    if not move_folder.exists():
         os.mkdir(move_folder)
 
-    shutil.move(source_file, move_folder)
+    shutil.move(image_file, move_folder)
