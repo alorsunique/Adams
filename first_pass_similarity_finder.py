@@ -6,12 +6,21 @@ import os
 import cv2
 import numpy as np
 
-project_dir = os.getcwd()
-create_dir = os.path.join(project_dir, "Create")
+from pathlib import Path
 
-JSON_comparison_dir = os.path.join("Comparison JSON.json")
+project_dir = Path.cwd()
 
-if os.path.exists(JSON_comparison_dir):
+current_dir = project_dir
+current_dir = current_dir.parent.parent
+
+resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+
+input_dir = resources_dir / "Input"
+create_dir = resources_dir / "Create"
+
+JSON_comparison_dir = resources_dir / "Comparison JSON.json"
+
+if JSON_comparison_dir.exists():
     os.remove(JSON_comparison_dir)
 
 json_file = open(JSON_comparison_dir, "w")
@@ -24,7 +33,14 @@ threshold_count = 0
 
 compare_pair_list = []
 
-for image_file in os.listdir(create_dir):
+create_content_list = []
+
+for file in create_dir.iterdir():
+    create_content_list.append(file.name)
+
+print(create_content_list)
+
+for image_file in create_content_list:
     count += 1
 
     print(f"Working on image {count}")
@@ -34,7 +50,10 @@ for image_file in os.listdir(create_dir):
     source_file = os.path.join(create_dir, image_file)
     source_image = cv2.imread(source_file)
 
-    for compare_image_file in os.listdir(create_dir)[count:]:
+    for compare_image_file in create_content_list[count:]:
+
+        print(f"{image_file} | {compare_image_file}")
+
         in_count += 1
 
         compare_file = os.path.join(create_dir, compare_image_file)
