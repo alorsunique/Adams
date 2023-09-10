@@ -6,27 +6,30 @@ import os
 import shutil
 import time
 from datetime import datetime
-
+from pathlib import Path
 from exif import Image
 
-project_dir = os.getcwd()
-input_dir = os.path.join(project_dir, "Input")
+project_dir = Path.cwd()
 
-create_dir = os.path.join(project_dir, "Create")
+current_dir = project_dir
+current_dir = current_dir.parent.parent
 
-if os.path.exists(create_dir):
+resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+
+input_dir = resources_dir / "Input"
+create_dir = resources_dir / "Create"
+
+if create_dir.exists():
     shutil.rmtree(create_dir)
 os.mkdir(create_dir)
 
-if not os.path.exists(input_dir):
+if not input_dir.exists():
     os.mkdir(input_dir)
 
-for image_file in os.listdir(input_dir):
-    print(image_file)
+for image_file in input_dir.iterdir():
+    print(image_file.name)
 
-    source_file = os.path.join(input_dir, image_file)
-
-    image_handle = open(source_file, 'rb')
+    image_handle = open(image_file, 'rb')
 
     image_object = Image(image_handle)
 
@@ -34,7 +37,7 @@ for image_file in os.listdir(input_dir):
 
     # In this part of the script, the date and time are extracted
 
-    filename_split = image_file.split("_")
+    filename_split = image_file.name.split("_")
 
     date_chunk = filename_split[1]
     time_chunk = filename_split[2]
@@ -56,7 +59,7 @@ for image_file in os.listdir(input_dir):
 
     print(f"EXIF: {image_object.has_exif} | EXIF List: {image_object.list_all()}")
 
-    create_image_dir = os.path.join(create_dir, f"New_{image_file}")
+    create_image_dir = create_dir / f"New_{image_file.name}"
 
     create_handle = open(create_image_dir, 'wb')
 
