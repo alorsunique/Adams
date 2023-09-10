@@ -3,19 +3,28 @@
 import json
 import os
 
+from pathlib import Path
+
 import cv2
 
-project_dir = os.getcwd()
-input_dir = os.path.join(project_dir, "Input")
+project_dir = Path.cwd()
 
-JSON_comparison_dir = os.path.join("Comparison JSON.json")
+current_dir = project_dir
+current_dir = current_dir.parent.parent
+
+resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+
+input_dir = resources_dir / "Input"
+
+
+JSON_comparison_dir = resources_dir / "Comparison JSON.json"
 json_file = open(JSON_comparison_dir, "r")
 compare_pair = json.load(json_file)
 json_file.close()
 
-true_JSON_comparison_dir = os.path.join("True Comparison JSON.json")
+true_JSON_comparison_dir = resources_dir / "True Comparison JSON.json"
 
-if os.path.exists(true_JSON_comparison_dir):
+if true_JSON_comparison_dir.exists():
     os.remove(true_JSON_comparison_dir)
 
 json_file = open(true_JSON_comparison_dir, "w")

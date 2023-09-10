@@ -2,17 +2,30 @@
 
 import os
 
+from pathlib import Path
+
 import cv2
 
-project_dir = os.getcwd()
-comparison_dir = os.path.join(project_dir, "Comparison")
+project_dir = Path.cwd()
 
-if not os.path.exists(comparison_dir):
+current_dir = project_dir
+current_dir = current_dir.parent.parent
+
+resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+
+comparison_dir = resources_dir / "Comparison"
+
+if not comparison_dir.exists():
     os.mkdir(comparison_dir)
 
 count = 0
 
-for image_file in os.listdir(comparison_dir):
+comparison_content_list = []
+
+for file in comparison_dir.iterdir():
+    comparison_content_list.append(file.name)
+
+for image_file in comparison_content_list:
 
     count += 1
 
@@ -21,7 +34,7 @@ for image_file in os.listdir(comparison_dir):
 
     source_shape = source_image.shape
 
-    for compare_image_file in os.listdir(comparison_dir)[count:]:
+    for compare_image_file in comparison_content_list[count:]:
 
         compare_file = os.path.join(comparison_dir, compare_image_file)
         compare_image = cv2.imread(compare_file)

@@ -5,48 +5,53 @@
 import os
 import time
 from datetime import datetime
-
+from pathlib import Path
 from exif import Image
 
 # This setup the directory required for the code
-project_dir = os.getcwd()
-input_dir = os.path.join(project_dir, "Input")
 
-if not os.path.exists(input_dir):
+project_dir = Path.cwd()
+
+current_dir = project_dir
+current_dir = current_dir.parent.parent
+
+resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+
+input_dir = resources_dir / "Input"
+
+if not input_dir.exists():
     os.mkdir(input_dir)
 
 # This section should perform a preliminary renaming.
 
 img_count = 0
 
-for image_file in os.listdir(input_dir):
-    source_file = os.path.join(input_dir, image_file)
+for image_file in input_dir.iterdir():
+    print(f"Preliminary Renaming: {image_file.name}")
 
-    print(f"Preliminary Renaming: {image_file}")
-
-    file_handle = os.path.splitext(image_file)[1]
+    file_handle = os.path.splitext(image_file.name)[1]
 
     time_filter = datetime.now()
     time_filter = time_filter.strftime("%H%M%S")
     img_count += 1
 
     new_img_name = f"{img_count}{time_filter}{file_handle}"
-    new_img_name = os.path.join(input_dir, new_img_name)
+    new_img_name = input_dir / new_img_name
 
-    os.rename(source_file, new_img_name)
+    os.rename(image_file, new_img_name)
 
 # The actual renaming of the edited photos are done here
 
 img_count = 0
 same_img_count = 0
 
-for image_file in os.listdir(input_dir):
+for image_file in input_dir.iterdir():
 
-    file_handle = os.path.splitext(image_file)[1]
+    file_handle = os.path.splitext(image_file.name)[1]
 
-    print(f"Current Image Modified: {image_file}")
+    print(f"Current Image Modified: {image_file.name}")
 
-    source_file = os.path.join(input_dir, image_file)
+    source_file = image_file
 
     # In here, the type of file is considered
     # For PNG, no EXIF so the modification time is used
@@ -137,18 +142,18 @@ for image_file in os.listdir(input_dir):
 
             new_name = f"Edit_{rename_date}_{rename_time}{file_handle}"
 
-    new_img_dir = os.path.join(input_dir, new_name)
+    new_img_dir = input_dir / new_name
 
     # This section checks for duplicates
-    if os.path.exists(new_img_dir):
+    if new_img_dir.exists():
         print("Image Existing. Renaming Same Images")
         while True:
             same_img_count += 1
             name_split_tup = os.path.splitext(new_name)
 
             same_new_name = f"{name_split_tup[0]}_{same_img_count}{name_split_tup[1]}"
-            same_dir = os.path.join(input_dir, same_new_name)
-            if not os.path.exists(same_dir):
+            same_dir = input_dir / same_new_name
+            if not same_dir.exists():
                 new_img_dir = same_dir
                 break
         os.rename(source_file, new_img_dir)

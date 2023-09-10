@@ -1,10 +1,20 @@
+# This script should delete duplicates found after second pass
+
 import json
 import os
 
-project_dir = os.getcwd()
-input_dir = os.path.join(project_dir, "Input")
+from pathlib import Path
 
-JSON_comparison_dir = os.path.join("True Comparison JSON.json")
+project_dir = Path.cwd()
+
+current_dir = project_dir
+current_dir = current_dir.parent.parent
+
+resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+
+input_dir = resources_dir / "Input"
+
+JSON_comparison_dir = resources_dir / "True Comparison JSON.json"
 json_file = open(JSON_comparison_dir, "r")
 positive_pair_list = json.load(json_file)
 json_file.close()
@@ -48,7 +58,7 @@ deletable_count = 0
 
 for entry in processed_group_list:
 
-    deletable_count += len(entry)-1
+    deletable_count += len(entry) - 1
 
     for image_file in entry[1:]:
 
