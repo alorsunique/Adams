@@ -8,11 +8,9 @@ from pathlib import Path
 from exif import Image
 
 project_dir = Path.cwd()
+upper_dir = project_dir.parent.parent
 
-current_dir = project_dir
-current_dir = current_dir.parent.parent
-
-resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+resources_dir = upper_dir / "PycharmProjects Resources" / "Adams Resources"
 
 output_dir = resources_dir / "Output"
 sort_dir = resources_dir / "Sorted Directory"

@@ -1,17 +1,14 @@
 # This script should just compare images in the Comparison folder
 
 import os
-
 from pathlib import Path
 
 import cv2
 
 project_dir = Path.cwd()
+upper_dir = project_dir.parent.parent
 
-current_dir = project_dir
-current_dir = current_dir.parent.parent
-
-resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+resources_dir = upper_dir / "PycharmProjects Resources" / "Adams Resources"
 
 comparison_dir = resources_dir / "Comparison"
 

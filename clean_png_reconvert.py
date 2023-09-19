@@ -7,14 +7,13 @@ import shutil
 import time
 from datetime import datetime
 from pathlib import Path
+
 from exif import Image
 
 project_dir = Path.cwd()
+upper_dir = project_dir.parent.parent
 
-current_dir = project_dir
-current_dir = current_dir.parent.parent
-
-resources_dir = current_dir / "PycharmProjects Resources" / "Adams Resources"
+resources_dir = upper_dir / "PycharmProjects Resources" / "Adams Resources"
 
 input_dir = resources_dir / "Input"
 create_dir = resources_dir / "Create"
