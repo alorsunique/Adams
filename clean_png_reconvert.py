@@ -36,7 +36,7 @@ for image_file in input_dir.iterdir():
 
     # In this part of the script, the date and time are extracted
 
-    filename_split = image_file.name.split("_")
+    filename_split = image_file.stem.split("_")
 
     date_chunk = filename_split[1]
     time_chunk = filename_split[2]
